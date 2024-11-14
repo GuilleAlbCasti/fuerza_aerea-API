@@ -26,9 +26,11 @@ class Route {
         }
         $partsURL = explode('/', trim($url,'/'));
         $partsRoute = explode('/', trim($this->url,'/'));
+
         if(count($partsRoute) != count($partsURL)) {
             return false;
         }
+         
         foreach ($partsRoute as $key => $part) {
             if($part[0] != ":") {
                 if($part != $partsURL[$key])
@@ -37,6 +39,7 @@ class Route {
                 $this->params[''.substr($part,1)] = $partsURL[$key];
             }
         }
+
         return true;
     }
 
