@@ -5,39 +5,40 @@ require_once __DIR__ .'/../views/json.view.php';
 
 
 
-class UserApicontroller {
+class UserApiController {
     
     private $avionModel;
     private $view;
+    private $request;
 
-    public function __construct() {
+    public function __construct($request) {
         $this->avionModel = new AvionModel();
         $this->view = new JSONView();
+        $this->request = $request;
+
+        if ($request === null) {
+            echo "El objeto request es null!";
+        } else {
+            var_dump($request);
+        }
+    
     }
 
     // /api/aviones
+
     
-    public function getAll($request) {
+    public function getAll() {
 
-        echo ('¡¡¡Entra aca!!!!');
 
-        $origen = $request->query->origen ?? null;
-
+        $origen = $this->request->query->origen ?? null;
+;
+        echo('ORIGEN:---------------->');
+        var_dump($origen);
+        
         //obtengo las funciones del modelo
         //armo lógica de query
-        echo ('>>>> $request: ');
-        var_dump($request);
-        echo ('<<<<');
-        echo ('>>>> $request->query: ');
-        var_dump($request->query);
-        echo ('<<<<');
-        echo ('>>>> $request->query->origen: ');
-        var_dump($request->query->origen);
-        echo ('<<<<');
-        echo ('Esto es el $origen -------> '.$origen);
 
-        if($origen) {
-            echo ('Esto es el $origen -------> '.$origen);
+        if(isset($origen)) {
             $aviones = $this->avionModel->getAllAvionByOrigen($origen);
         } else {
             
@@ -58,9 +59,9 @@ class UserApicontroller {
     } 
     
     // /api/avion/:id
-    public function get($req) {
+    public function get() {
         //obtengo el id del avion
-        $id = $req->params->id;
+        $id = $this->request->params->id;
 
         //obtengo la funcion del modelo
         $avion = $this->avionModel->getAvion($id);
@@ -73,12 +74,18 @@ class UserApicontroller {
         //mando la respuesta a la vista
         return $this->view->response($avion);
     }
+
+    public function notFound($request, $response) {
+        $response->setStatus(404);
+        echo json_encode([
+            "error" => "Recurso no encontrado",
+            "resource" => $request->url ?? "desconocido"
+        ]);
+    }
+  
     
 }
 
-class ErrorController {
-    public function notFound($request, $response) {
-        $response->send(['Error' => 'Ruta no encontrada'], 404);
-    }
-}
+
+
 

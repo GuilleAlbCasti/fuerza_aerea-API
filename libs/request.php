@@ -11,19 +11,10 @@ class Request {
             $this->body = null;
         }
 
-        echo('>>>> var_dump($_GET):');
-        var_dump($_GET);
-        echo('<<<<');
-
-        $this->query = (object) $_GET;
-        
-        echo('>>>> var_dump($this->query):');
-        var_dump($this->query);
-        echo('<<<<');
-
         if (empty($this->query)) {
             $this->query = new stdClass();
         }
+
     }
 
 }

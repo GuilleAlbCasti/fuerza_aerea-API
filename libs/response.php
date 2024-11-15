@@ -12,6 +12,10 @@ class Response {
         // Convertir el cuerpo a JSON y enviarlo
         echo json_encode($body);
     }
+
+    public function setStatus($code) {
+        http_response_code($code); // Esta función nativa de PHP establece el código de estado HTTP
+    }
     
 
 }

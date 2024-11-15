@@ -2,6 +2,7 @@
 
 require_once 'Request.php';
 require_once 'Response.php';
+require_once 'app/controllers/ErrorController.php';
 
 
 class Route {
@@ -43,13 +44,37 @@ class Route {
         return true;
     }
 
+    // public function run($request, $response) {
+    //     $controller = $this->controller;
+    //     $method = $this->method;
+    //     // $request->params = (object) $this->params;
+
+    //     // (new $controller())->$method($request,$response);
+    //     // Ahora pasamos el $request al constructor del controlador
+    //     $controllerInstance = new $controller($request);
+
+    //     // Ejecutamos el método
+    //     $controllerInstance->$method();
+    // }
     public function run($request, $response) {
         $controller = $this->controller;
         $method = $this->method;
-        $request->params = (object) $this->params;
-
-        (new $controller())->$method($request,$response);
+    
+        $controllerInstance = new $controller();
+        
+        // Verifica si el método requiere 1 o 2 parámetros
+        $reflection = new ReflectionMethod($controllerInstance, $method);
+        $paramCount = $reflection->getNumberOfParameters();
+    
+        if ($paramCount === 2) {
+            $controllerInstance->$method($request, $response);
+        } elseif ($paramCount === 1) {
+            $controllerInstance->$method($response);
+        } else {
+            $controllerInstance->$method();
+        }
     }
+    
 }
 
 class Router {
