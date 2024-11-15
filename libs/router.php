@@ -57,6 +57,7 @@ class Route {
     //     $controllerInstance->$method();
     // }
     public function run($request, $response) {
+        
         $controller = $this->controller;
         $method = $this->method;
     

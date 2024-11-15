@@ -4,18 +4,26 @@ class Request {
     public $params = null;
     public $query = null;
 
+    // public function __construct() {
+    //     try {
+    //         $this->body = json_decode(file_get_contents('php://input'), true);
+    //     } catch(Exception $e) {
+    //         $this->body = null;
+    //     }
+
+    //     if (empty($this->query)) {
+    //         $this->query = new stdClass();
+    //     }
+
+    // }
+
     public function __construct() {
-        try {
-            $this->body = json_decode(file_get_contents('php://input'), true);
-        } catch(Exception $e) {
-            $this->body = null;
-        }
-
-        if (empty($this->query)) {
-            $this->query = new stdClass();
-        }
-
+        $this->body = json_decode(file_get_contents('php://input'), true);
+        $this->params = new stdClass();
+        $this->query = (object) $_GET; // Asegura que siempre tenga datos.
+        
     }
+    
 
 }
 

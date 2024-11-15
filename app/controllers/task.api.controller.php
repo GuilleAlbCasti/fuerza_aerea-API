@@ -12,6 +12,7 @@ class UserApiController {
     private $request;
 
     public function __construct($request) {
+        echo ("ACA ESTOY");
         $this->avionModel = new AvionModel();
         $this->view = new JSONView();
         $this->request = $request;
@@ -75,16 +76,18 @@ class UserApiController {
         return $this->view->response($avion);
     }
 
-    public function notFound($request, $response) {
-        $response->setStatus(404);
-        echo json_encode([
-            "error" => "Recurso no encontrado",
-            "resource" => $request->url ?? "desconocido"
-        ]);
-    }
-  
     
 }
+
+// class ErrorController {
+//     public function notFound($request, $response) {
+//         $response->send([
+//             "error" => "Recurso no encontrado",
+//             "resource" => $request->url ?? "desconocido"
+//         ], 404);
+//     }
+// }
+
 
 
 

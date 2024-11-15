@@ -1,12 +1,20 @@
 <?php
 
     class JSONView {
+        // public function response($body, $status = 200) {
+        //     header("Content-type: aplication/json");
+        //     $statusText = $this->_requestStatus($status);
+        //     header("HTTP/1.1 $status $statusText");
+        //     echo json_encode($body);
+        // }
+        
         public function response($body, $status = 200) {
-            header("Content-type: aplication/json");
-            $statusText = $this->_requestStatus($status);
-            header("HTTP/1.1 $status $statusText");
+            header("Content-Type: application/json");
+            http_response_code($status);
             echo json_encode($body);
         }
+
+        
 
         private function _requestStatus($code) {
             $status = array(

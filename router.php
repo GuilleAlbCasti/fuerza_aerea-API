@@ -21,7 +21,10 @@ $router->addRoute('avion/:id', 'GET', 'UserApiController', 'get');
 $router->setDefaultRoute('ErrorController', 'notFound');
 
 //$router->route($_GET['response'], $_REQUEST['REQUEST_METHOD']);
-$url = str_replace('/API/fuerza_aerea-API/api/', '', $_SERVER['REQUEST_URI']);
+//$url = str_replace('/API/fuerza_aerea-API/api/', '', $_SERVER['REQUEST_URI']);
+$parsedUrl = parse_url($_SERVER['REQUEST_URI']);
+$url = trim($parsedUrl['path'], '/');
+
 $router->route($url, $_SERVER['REQUEST_METHOD']);
 echo ('$_SERVER["REQUEST_URI"]= '.$_SERVER['REQUEST_URI']);
 echo ('$_SERVER["REQUEST_METHOD"]= '.$_SERVER['REQUEST_METHOD']);
