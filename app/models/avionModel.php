@@ -15,10 +15,31 @@ class AvionModel {
     // OBTENER LISTA DE AVIONES
 
     public function getAllAvion() {
-        $query = $this->db->prepare('SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id ORDER BY avion.modelo ASC');
-        $query->execute();
 
-        return $query->fetchAll(PDO::FETCH_OBJ);
+        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id';
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+       
+        $aviones = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $aviones;
+    }
+
+
+    public function getAllAvionByOrigen($filtrarOrigen) {
+
+        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id WHERE avion.origen = ?';
+
+        $param[] = $filtrarOrigen;
+
+        $query = $this->db->prepare($sql);
+        $query->execute($param);
+       
+
+        $aviones = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $aviones;
     }
 
     // OBTENER AVIONES POR ORIGEN

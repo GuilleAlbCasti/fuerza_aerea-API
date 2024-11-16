@@ -1,5 +1,6 @@
 <?php
 
+
 require_once __DIR__ . '/../models/avionModel.php';
 require_once __DIR__ .'/../views/json.view.php';
 
@@ -11,51 +12,24 @@ class UserApiController {
     private $view;
     private $request;
 
-    public function __construct($request) {
-        echo ("ACA ESTOY");
+    public function __construct() {
         $this->avionModel = new AvionModel();
         $this->view = new JSONView();
-        $this->request = $request;
-
-        if ($request === null) {
-            echo "El objeto request es null!";
-        } else {
-            var_dump($request);
-        }
-    
     }
 
     // /api/aviones
-
-    
     public function getAll() {
-
-
-        $origen = $this->request->query->origen ?? null;
-;
-        echo('ORIGEN:---------------->');
-        var_dump($origen);
-        
-        //obtengo las funciones del modelo
-        //armo lógica de query
-
-        if(isset($origen)) {
-            $aviones = $this->avionModel->getAllAvionByOrigen($origen);
+       
+        if(isset($_GET['origen'])) {
+            $filtrarOrigen = $_GET['origen'];
+            $aviones = $this->avionModel->getAllAvionByOrigen($filtrarOrigen);
         } else {
-            
+            //obtengo las funciones del modelo
             $aviones = $this->avionModel->getAllAvion();
-            
         }
-
-        
 
         //mando las respuestas a la vista
-        if (empty($aviones)) {
-            return $this->view->response("No se encontraron aviones con el origen especificado.", 404);
-        } else {
-            return $this->view->response($aviones);
-        }
-        
+        return $this->view->response($aviones);
         
     } 
     
@@ -79,14 +53,6 @@ class UserApiController {
     
 }
 
-// class ErrorController {
-//     public function notFound($request, $response) {
-//         $response->send([
-//             "error" => "Recurso no encontrado",
-//             "resource" => $request->url ?? "desconocido"
-//         ], 404);
-//     }
-// }
 
 
 
