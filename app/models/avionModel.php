@@ -27,16 +27,11 @@ class AvionModel {
     }
 
 
-    public function getAllAvionByOrigen($filtrarOrigen = null) {
+    public function getAllAvionByOrigen($filtrarOrigen) {
 
-        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id';
+        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id WHERE avion.origen = ?';
 
-        $param = [];
-
-        if($filtrarOrigen != null) {
-            $sql .= ' WHERE avion.origen = ?';
-            $param = $filtrarOrigen;
-        }
+        $param[] = $filtrarOrigen;
 
         $query = $this->db->prepare($sql);
         $query->execute($param);

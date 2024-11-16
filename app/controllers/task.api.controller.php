@@ -20,8 +20,8 @@ class UserApicontroller {
     // /api/aviones
     public function getAll($req) {
 
-        if(isset($req->query->origen)&& $req->param->origen == null) {
-            $filtrarOrigen = $req->query->origen;
+        if(isset($_GET['origen'])) {
+            $filtrarOrigen = $_GET['origen'];
             $aviones = $this->avionModel->getAllAvionByOrigen($filtrarOrigen);
         } else {
             //obtengo las funciones del modelo
