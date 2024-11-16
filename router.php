@@ -8,4 +8,4 @@ $router = new Router();
 $router->addRoute('aviones', 'GET', 'UserApiController', 'getAll');
 $router->addRoute('avion/:id', 'GET', 'UserApiController', 'get');
 
-$router->route($_GET['response'], $_REQUEST['REQUEST_METHOD']);
+$router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);
