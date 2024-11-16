@@ -66,6 +66,10 @@ class AvionModel {
     function agregarAvion($modelo, $anio, $origen, $horas_vuelo, $base_fk, $categoria_fk) {
         $query = $this->db->prepare('INSERT INTO avion(modelo, anio, origen, horas_vuelo, base_fk, categoria_fk) VALUES (?,?,?,?,?,?)');
         $query->execute([$modelo, $anio, $origen, $horas_vuelo, $base_fk, $categoria_fk]);
+
+        $id = $this->db->lastInsertId();
+    
+        return $id;
     }
 
     // EDITAR UN AVIÓN
