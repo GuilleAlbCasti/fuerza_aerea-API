@@ -14,11 +14,24 @@ class AvionModel {
  
     // OBTENER LISTA DE AVIONES
 
-    public function getAllAvion() {
-        $query = $this->db->prepare('SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id ORDER BY avion.modelo ASC');
-        $query->execute();
+    public function getAllAvion($filtrarOrigen = null) {
 
-        return $query->fetchAll(PDO::FETCH_OBJ);
+        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id';
+
+        $param = [];
+
+        if($filtrarOrigen != null) {
+            $sql .= ' WHERE avion.origen = ?';
+            $param = $filtrarOrigen;
+        }
+
+        $query = $this->db->prepare($sql);
+        $query->execute($param);
+       
+
+        $aviones = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $aviones;
     }
 
     // OBTENER 1 AVION

@@ -14,12 +14,20 @@ class UserApicontroller {
     public function __construct() {
         $this->avionModel = new AvionModel();
         $this->view = new JSONView();
+        echo('ENTRE A CONTROLLER: '.$_SERVER['REQUEST_URI']);
     }
 
     // /api/aviones
     public function getAll($req) {
+
+        $filtrarOrigen = null;
+
+        if(isset($req->query->origen)) {
+            $filtrarOrigen = $req->query->origen;
+        }
+
         //obtengo las funciones del modelo
-        $aviones = $this->avionModel->getAllAvion();
+        $aviones = $this->avionModel->getAllAvion($filtrarOrigen);
         //mando las respuestas a la vista
         return $this->view->response($aviones);
     } 
