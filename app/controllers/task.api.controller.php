@@ -34,9 +34,9 @@ class UserApiController {
     } 
     
     // /api/avion/:id
-    public function get() {
+    public function get($req) {
         //obtengo el id del avion
-        $id = $this->request->params->id;
+        $id = $req->params->id;
 
         //obtengo la funcion del modelo
         $avion = $this->avionModel->getAvion($id);
