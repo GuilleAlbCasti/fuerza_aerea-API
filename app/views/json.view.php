@@ -1,20 +1,12 @@
 <?php
 
     class JSONView {
-        // public function response($body, $status = 200) {
-        //     header("Content-type: aplication/json");
-        //     $statusText = $this->_requestStatus($status);
-        //     header("HTTP/1.1 $status $statusText");
-        //     echo json_encode($body);
-        // }
-        
-        public function response($body, $status = 200) {
+        public function response($data, $status = 200) {
             header("Content-Type: application/json");
-            http_response_code($status);
-            echo json_encode($body);
+            $statusText = $this->_requestStatus($status);
+            header("HTTP/1.1 $status $statusText");
+            echo json_encode($data);
         }
-
-        
 
         private function _requestStatus($code) {
             $status = array(
@@ -22,10 +14,14 @@
                 201 => "Created",
                 204 => "No Content",
                 400 => "Bad Request",
+                401 => "Unauthorized",
                 404 => "Not Found",
-                500 => "Internal Server Errro",
+                500 => "Internal Server Error"
             );
-            return (isset($status[$code])) ? $status[$code] : $status[500];
+            if(!isset($status[$code])) {
+                $code = 500;
+            }
+            return $status[$code];
         }
     
     }
