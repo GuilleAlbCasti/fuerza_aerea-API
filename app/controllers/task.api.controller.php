@@ -23,9 +23,21 @@ class UserApiController {
         if(isset($_GET['origen'])) {
             $filtrarOrigen = $_GET['origen'];
             $aviones = $this->avionModel->getAllAvionByOrigen($filtrarOrigen);
+        } elseif(isset($_GET['base_nombre'])) {
+            $filtrarBase = $_GET['base_nombre'];
+            $aviones = $this->avionModel->getAllAvionByBase($filtrarBase);
+        } elseif(isset($_GET['categoria_nombre'])) {
+            $filtrarCategoria = $_GET['categoria_nombre'];
+            $aviones = $this->avionModel->getAllAvionByCategoria($filtrarCategoria);
+        } elseif(isset($_GET['orderBy'])) {
+            $filtrarOrden = $_GET['orderBy'];
+            $aviones = $this->avionModel->getAllAvionByOrden($filtrarOrden);
         } else {
             $aviones = $this->avionModel->getAllAvion();
         }
+
+
+
 
         return $this->view->response($aviones);
     } 

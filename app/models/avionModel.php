@@ -43,6 +43,78 @@ class AvionModel {
         return $aviones;
     }
 
+    // OBTENER LISTA DE AVIONES POR BASE
+
+    public function getAllAvionByBase($filtrarBase) {
+        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id WHERE base.nombre = ?';
+
+        $param[] = $filtrarBase;
+
+        $query = $this->db->prepare($sql);
+        $query->execute($param);
+       
+
+        $aviones = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $aviones;
+    }
+
+    // OBTENER LISTA DE AVIONES POR CATEGORIA
+
+    public function getAllAvionByCategoria($filtrarCategoria) {
+        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id WHERE categoria.nombre = ?';
+
+        $param[] = $filtrarCategoria;
+
+        $query = $this->db->prepare($sql);
+        $query->execute($param);
+       
+
+        $aviones = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $aviones;
+    }
+
+    // OBTENER LISTA DE AVIONES POR ORDEN
+
+    public function getAllAvionByOrden($filtrarOrden) {
+
+        $sql = 'SELECT avion.id, avion.modelo, avion.anio, avion.origen, avion.horas_vuelo, categoria.nombre AS categoria_nombre, base.nombre AS base_nombre FROM avion INNER JOIN base ON avion.base_fk = base.id INNER JOIN categoria ON avion.categoria_fk = categoria.id';
+
+        if($filtrarOrden) {
+            switch($filtrarOrden) {
+                case 'modelo':
+                    $sql .= ' ORDER BY avion.modelo';
+                    break;
+                case 'anio':
+                    $sql .= ' ORDER BY avion.anio';
+                    break;
+                case 'id':
+                    $sql .= ' ORDER BY avion.id';
+                    break;
+                case 'modelo-r':
+                    $sql .= ' ORDER BY avion.modelo DESC';
+                    break;
+                case 'anio-r':
+                    $sql .= ' ORDER BY avion.anio DESC';
+                    break;
+                case 'id-r':
+                    $sql .= ' ORDER BY avion.id DESC';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+       
+
+        $aviones = $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $aviones;
+    }
+
     // OBTENER 1 AVION
 
     public function getAvion($id_avion) {
